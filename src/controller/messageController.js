@@ -6,8 +6,10 @@ import { Message } from "../model/messageModel.js";
 export const getUserForSidebar = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
-    const filterUser = await authModel.find({ _id: { $ne: loggedInUserId } });
-    res.status(200).json(filterUser);
+    const filterUser = await authModel
+      .find({ _id: { $ne: loggedInUserId } })
+      .select("-password -__v");
+    res.status(200).json({ users: filterUser });
   } catch (error) {
     console.log("somthing error while getting the users", error);
   }
@@ -24,7 +26,9 @@ export const getMessageById = async (req, res) => {
         { receiverId: myId },
         { senderId: otherId },
       ],
-    });
+    })
+      .select("-__v -password")
+      .sort({ createdAt: 1 }); //1 for ascending order
     res.status(200).json(message);
   } catch (error) {
     console.log("somthing went error in getting msg ", error);

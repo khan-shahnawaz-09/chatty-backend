@@ -95,7 +95,6 @@ export const updateProfilePic = async (req, res) => {
       },
       { new: true }
     );
-    console.log(pic);
     res.status(200).json({ success: true, user: pic });
   } catch (error) {
     res.status(500).json({ msg: "server internal error" });

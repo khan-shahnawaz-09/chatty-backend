@@ -6,9 +6,16 @@ import messageRoute from "./routes/messageRoute.js";
 import { connectDB } from "./lib/mongoDb.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+//to get __dirname in ES module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 //config
 dotenv.config();
 //middleware
+app.use(express.static(path.join(__dirname, "../public")));
 app.use(cookieParser());
 app.use(express.json({ limit: "10mb", extended: true }));
 app.use(
